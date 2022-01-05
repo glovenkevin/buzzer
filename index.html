@@ -43,13 +43,14 @@
             <div class="col-md-3">
                 Player: <span id="spanUsername"></span>
             </div>
-            <div class="col-md-6">
-                <div style="height: 200px; border: 1px solid #000; overflow-y: scroll;">
+            <div class="col-md-6 text-center">
+                <h2 id="judulGame">Wellcome to the jungle</h2>
+                <div style="height: 200px; overflow-y: scroll;" class="border form-group">
                     <ul id="messages"></ul>
                 </div>
-                <span id="spanButton">
+                <div class="form-group" id="divButton">
                     <button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>
-                </span>
+                </div>
             </div>
             <div class="col-md-3">
                 <hr>
@@ -130,7 +131,7 @@
 
     function addButton() {
         let btn = '<button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>'
-        $('#spanButton').append(btn)
+        $('#divButton').append(btn)
     }
 
     socket.on('chat message', function(data) {
@@ -143,6 +144,10 @@
                 $('#listUrutan').append($('<li>').text(element));
             });
         } 
+    });
+
+    socket.on('update content', function(data) {
+        $('#judulGame').text(data.content)
     });
 
 </script>

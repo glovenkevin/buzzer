@@ -67,6 +67,9 @@ io.on('connection', function(socket:any){
 
     io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     
+    socket.on('update content', function(msg:any){
+        io.emit('update content', msg);
+    });
 
 });
 
