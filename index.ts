@@ -57,15 +57,19 @@ io.on('connection', function(socket:any){
         if (msg == 'not-release') {
             leaderboardStore.clear();
         }
-        socket.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+        broadcastLeaderboard();
+        // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
     socket.on('leaderboard', function(msg:any){
         leaderboardStore.saveLeaderboard(msg);
-        io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+        
+        broadcastLeaderboard();
+        // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
-    io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+    broadcastLeaderboard();
+    // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     
     socket.on('update content', function(msg:any){
         io.emit('update content', msg);
@@ -76,3 +80,8 @@ io.on('connection', function(socket:any){
 http.listen(3000, function(){
     console.log('listening on *:3000');
 });
+
+
+function broadcastLeaderboard(){
+    io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+}
