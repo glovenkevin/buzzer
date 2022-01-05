@@ -63,6 +63,7 @@ io.on('connection', function(socket:any){
 
     socket.on('admin command', function(msg:any){
         console.log(msg);
+        io.emit('admin command', msg);
     });
 
     

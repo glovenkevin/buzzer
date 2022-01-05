@@ -101,6 +101,7 @@
     })
 
     socket.on('admin command', function(data) {
+        console.log(data)
         if (data == 'release') {
             $('#btnHit').show()
         }
