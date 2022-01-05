@@ -6,6 +6,10 @@ app.get('/', function(req:any, res:any){
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/logo', function(req:any, res:any){
+    res.sendFile(__dirname + '/image/doge.jpeg');
+});
+
 app.get('/admin', function(req:any, res:any){
     res.sendFile(__dirname + '/admin.html');
 });
@@ -50,7 +54,7 @@ io.on('connection', function(socket:any){
         }
         socket.emit('leaderboard', leaderboard);
     });
-    
+
     socket.on('leaderboard', function(msg:any){
         leaderboard.push(msg)
         console.log(leaderboard)
