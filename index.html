@@ -31,15 +31,23 @@
     </div>
 
     <div class="container" style="display: none;" id="containerChat">
-        <div class="row">
+        <div class="row pt-5">
             <div class="col-md-3">
                 Player: <span id="spanUsername"></span>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div style="height: 200px; border: 1px solid #000; overflow-y: scroll;">
                     <ul id="messages"></ul>
                 </div>
-                <button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>
+                <span id="spanButton">
+                    <button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>
+                </span>
+            </div>
+            <div class="col-md-3">
+                <h3>List Urutan:</h3>
+                <ol id="listUrutan">
+                    
+                </ol>
             </div>
         </div>
     </div>
@@ -95,25 +103,38 @@
 
     $(document).on('click', '#btnHit', function() {
         let name = $('#spanUsername').text()
+        socket.emit('leaderboard', name);
         socket.emit('chat message', `Hit by ${name}`);
         canHit = false
-        $('#btnHit').hide()
+        $('#btnHit').remove()
     })
 
     socket.on('admin command', function(data) {
-        console.log(data)
         if (data == 'release') {
-            $('#btnHit').show()
+            addButton()
         }
         if (data == 'not-release') {
-            $('#btnHit').hide()
+            $('#btnHit').remove()
         }
     });
-    socket.on('response message', function(data) {
-        $('#messages').append($('<li>').text(data));
-    });
+
+    function addButton() {
+        let btn = '<button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>'
+        $('#spanButton').append(btn)
+    }
+
     socket.on('chat message', function(data) {
         $('#messages').append($('<li>').text(data));
+    });
+    socket.on('leaderboard', function(data) {
+        if (data.length == 0) {
+            $('#listUrutan').empty()
+        }
+        if (data.length > 0) {
+            data.forEach(element => {
+                $('#listUrutan').append($('<li>').text(element));
+            });
+        } 
     });
 
 </script>

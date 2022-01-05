@@ -30,8 +30,20 @@
     socket.connect()
 
     $(document).on('click', '#btnRelease', function() {
-        socket.emit('admin command', 'release');
+        socket.emit('admin command', 'not-release');
+        let counter = 5;
+        let interval = setInterval(function() {
+            socket.emit('chat message', `Get Ready for ${counter}`);
+            counter--
+
+            if (counter == 0) {
+                clearInterval(interval)
+                socket.emit('chat message', 'Gooo, Saatnya bertarung!');
+                socket.emit('admin command', 'release');
+            }
+        }, 1000)
     })
+    
     $(document).on('click', '#btnDisable', function() {
         socket.emit('admin command', 'not-release');
     })
