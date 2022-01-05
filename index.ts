@@ -2,6 +2,8 @@ let express = require('express');
 let app  = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var favicon = require('serve-favicon');
+
 import path from "path";
 import {InMemoryLeaderboardStore} from "./messageStore";
 import {InMemoryStateStore} from "./stateStore";
@@ -11,6 +13,7 @@ const waitingStateStore = new InMemoryStateStore();
 const releasestateStore = new InMemoryStateStore();
 
 app.use(express.static(path.join(__dirname,'/static')));
+
 
 app.get('/', function(req:any, res:any){
     res.sendFile(__dirname + '/index.html');
