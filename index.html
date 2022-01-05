@@ -36,10 +36,10 @@
     </nav>
 
     <div class="container" id="loginContainer">
-        <div class="row align-items-center" style="height: 100vh;">
+        <div class="row align-items-center" style="height: 80vh;">
             <div class="col-md-4 offset-md-4 text-center">
                 <div class="form-group">
-                    <img src="" alt="">
+                    <img src="/doge-strong.jpeg" width="300" alt="doge fight">
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="text" maxlength="20" style="max-width: 400px;" placeholder="Nickname anda" id="username">
@@ -54,16 +54,24 @@
     <div class="container" style="display: none;" id="containerChat">
         <div class="row pt-5">
             <div class="col-md-3">
-                Player: <span id="spanUsername"></span>
+                <blockquote class="blockquote text-center">
+                    <p class="mb-0">Today's meme</p>
+                    <footer class="blockquote-footer">Our beloved <cite title="Source Title">Rei</cite></footer>
+                </blockquote>
+                <blockquote>
+                    <img src="/memes.png" width="100%" alt="">
+                </blockquote>
+                
+                <p>
+                    Player: <b><span id="spanUsername"></span></b>
+                </p>
             </div>
             <div class="col-md-6 text-center">
                 <h2 id="judulGame">Wellcome to the jungle</h2>
                 <div style="height: 200px; overflow-y: scroll;" class="border form-group" id="divMessage">
                     <ul id="messages"></ul>
                 </div>
-                <div class="form-group" id="divButton">
-                    <button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>
-                </div>
+                <div class="form-group" id="divButton"></div>
             </div>
             <div class="col-md-3">
                 <hr>
