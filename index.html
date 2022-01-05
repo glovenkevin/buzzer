@@ -16,6 +16,11 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
+        
+        #btnHit {
+            font-size: 4rem;
+            padding: 4rem 1rem;
+        }
     </style>
 
 </head>
@@ -23,7 +28,7 @@
     
     <nav class="navbar navbar-dark bg-dark p-4">
         <a class="navbar-brand" href="#">
-            <img src="/logo" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            <img src="/static/doge.jpeg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             ILK - Lawak Klub
         </a>
     </nav>
@@ -31,9 +36,15 @@
     <div class="container" id="loginContainer">
         <div class="row align-items-center" style="height: 100vh;">
             <div class="col-md-4 offset-md-4 text-center">
-                <input class="form-control" type="text" maxlength="20" style="max-width: 400px;" placeholder="username" id="username">
-                <br>
-                <button type="submit" class="btn btn-success btn-lg pl-5 pr-5" onclick="validate()">Join</button>
+                <div class="form-group">
+                    <img src="" alt="">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" maxlength="20" style="max-width: 400px;" placeholder="Nickname anda" id="username">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg pl-5 pr-5" onclick="validate()">Join</button>
+                </div>
             </div>
         </div>
     </div>
@@ -45,19 +56,19 @@
             </div>
             <div class="col-md-6 text-center">
                 <h2 id="judulGame">Wellcome to the jungle</h2>
-                <div style="height: 200px; overflow-y: scroll;" class="border form-group">
+                <div style="height: 200px; overflow-y: scroll;" class="border form-group" id="divMessage">
                     <ul id="messages"></ul>
                 </div>
                 <div class="form-group" id="divButton">
-                    <button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>
+                    <button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>
                 </div>
             </div>
             <div class="col-md-3">
                 <hr>
-                <h3>List Urutan:</h3>
-                <ol id="listUrutan">
-                    
-                </ol>
+                <div class="pl-3 pr-3">
+                    <h3>List Urutan:</h3>
+                    <ol id="listUrutan"></ol>
+                </div>
                 <hr>
             </div>
         </div>
@@ -130,12 +141,14 @@
     });
 
     function addButton() {
-        let btn = '<button type="button" class="btn btn-primary btn-lg" id="btnHit">Hit me!</button>'
+        let btn = '<button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>'
         $('#divButton').append(btn)
     }
 
     socket.on('chat message', function(data) {
         $('#messages').append($('<li>').text(data));
+        let messageWindow = document.getElementById('divMessage')
+        messageWindow.scrollTo(0, messageWindow.scrollHeight);
     });
     socket.on('leaderboard', function(data) {
         $('#listUrutan').empty()

@@ -12,10 +12,6 @@ app.get('/', function(req:any, res:any){
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/logo', function(req:any, res:any){
-    res.sendFile(__dirname + '/image/doge.jpeg');
-});
-
 app.get('/admin', function(req:any, res:any){
     res.sendFile(__dirname + '/admin.html');
 });
