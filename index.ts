@@ -50,21 +50,19 @@ io.on('connection', function(socket:any){
         io.emit('chat message', msg);
     });
 
-    let leaderboard:any = []
     socket.on('admin command', function(msg:any){
         console.log(msg);
         io.emit('admin command', msg);
 
         if (msg == 'not-release') {
-            leaderboard = []
+            leaderboardStore.clear();
         }
-        socket.emit('leaderboard', leaderboard);
+        socket.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
     socket.on('leaderboard', function(msg:any){
         leaderboardStore.saveLeaderboard(msg);
-        leaderboard = leaderboardStore.getAllLeaderboard();
-        io.emit('leaderboard', leaderboard);
+        io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
     io.emit('leaderboard', leaderboardStore.getAllLeaderboard());

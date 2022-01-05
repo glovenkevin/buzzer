@@ -1,6 +1,7 @@
 /* abstract */
  class LeaderboardStore {
     saveLeaderboard(leaderboard:string) {}
+    clear() {}
   }
   
   export class InMemoryLeaderboardStore extends LeaderboardStore {
@@ -12,6 +13,10 @@
   
     saveLeaderboard(leaderboard:string) {
       this.leaderboards.push(leaderboard);
+    }
+
+    clear() {
+      this.leaderboards = [];
     }
     
     getAllLeaderboard() {
