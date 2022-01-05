@@ -4,7 +4,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 import path from "path";
 import {InMemoryLeaderboardStore} from "./messageStore";
+import {InMemoryStateStore} from "./stateStore";
+
 const leaderboardStore = new InMemoryLeaderboardStore();
+const waitingStateStore = new InMemoryStateStore();
+const releasestateStore = new InMemoryStateStore();
 
 app.use(express.static(path.join(__dirname,'/static')));
 
@@ -46,27 +50,33 @@ io.on('connection', function(socket:any){
     });
 
     socket.on('chat message', function(msg:any){
+        // io.emit('chat message', msg);
         console.log(msg);
-        io.emit('chat message', msg);
+        waitingStateStore.saveState(msg)
+        broadcastWaitState();
     });
 
     socket.on('admin command', function(msg:any){
-        console.log(msg);
-        io.emit('admin command', msg);
+        // console.log(msg);
+        releasestateStore.saveState(msg);
+        broadcastReleaseState();
 
         if (msg == 'not-release') {
             leaderboardStore.clear();
+        }
+        if(msg == 'release'){
+            waitingStateStore.clear();
         }
         broadcastLeaderboard();
     });
 
     socket.on('leaderboard', function(msg:any){
         leaderboardStore.saveLeaderboard(msg);
-        
         broadcastLeaderboard();
     });
 
     broadcastLeaderboard();
+    broadcastReleaseState();
     
     socket.on('update content', function(msg:any){
         io.emit('update content', msg);
@@ -81,4 +91,12 @@ http.listen(3000, function(){
 
 function broadcastLeaderboard(){
     io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+}
+
+function broadcastWaitState(){
+    io.emit('chat message',  waitingStateStore.getAllState());
+}
+
+function broadcastReleaseState(){
+    io.emit('admin command',  releasestateStore.getAllState());
 }

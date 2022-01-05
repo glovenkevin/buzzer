@@ -2,6 +2,7 @@
  class LeaderboardStore {
     saveLeaderboard(leaderboard:string) {}
     clear() {}
+    getAllLeaderboard() {}
   }
   
   export class InMemoryLeaderboardStore extends LeaderboardStore {
