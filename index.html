@@ -127,9 +127,7 @@
         $('#messages').append($('<li>').text(data));
     });
     socket.on('leaderboard', function(data) {
-        if (data.length == 0) {
-            $('#listUrutan').empty()
-        }
+        $('#listUrutan').empty()
         if (data.length > 0) {
             data.forEach(element => {
                 $('#listUrutan').append($('<li>').text(element));

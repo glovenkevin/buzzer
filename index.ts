@@ -1,6 +1,12 @@
-let app  = require('express')();
+let express = require('express');
+let app  = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+import path from "path";
+import {InMemoryLeaderboardStore} from "./messageStore";
+const leaderboardStore = new InMemoryLeaderboardStore();
+
+app.use(express.static(path.join(__dirname,'/static')));
 
 app.get('/', function(req:any, res:any){
     res.sendFile(__dirname + '/index.html');
@@ -52,10 +58,13 @@ io.on('connection', function(socket:any){
     });
     
     socket.on('leaderboard', function(msg:any){
-        leaderboard.push(msg)
-        console.log(leaderboard)
+        leaderboardStore.saveLeaderboard(msg);
+        leaderboard = leaderboardStore.getAllLeaderboard();
         io.emit('leaderboard', leaderboard);
     });
+
+    io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
+    
 
 });
 
