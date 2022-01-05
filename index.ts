@@ -58,18 +58,15 @@ io.on('connection', function(socket:any){
             leaderboardStore.clear();
         }
         broadcastLeaderboard();
-        // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
     socket.on('leaderboard', function(msg:any){
         leaderboardStore.saveLeaderboard(msg);
         
         broadcastLeaderboard();
-        // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     });
 
     broadcastLeaderboard();
-    // io.emit('leaderboard', leaderboardStore.getAllLeaderboard());
     
     socket.on('update content', function(msg:any){
         io.emit('update content', msg);
