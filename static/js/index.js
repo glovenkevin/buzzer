@@ -13,19 +13,15 @@ $(function() {
     }
 })
 
-$(document).on('click', 'button.change-username', changeUsername)
-
-function changeUsername() {
+$(document).on('click', 'button.change-username', function() {
     localStorage.removeItem('username')
     socket.disconnect()
     $('#loginContainer').show()
     $('#containerChat').hide()
     $('button.change-username').hide()
-}
+})
 
-$(document).on('click', 'button.join', validate)
-
-function validate() {
+$(document).on('click', 'button.join', function() {
     let username = document.getElementById('username').value
     if (username.trim() == '') {
         alert('Username tidak boleh kosong')
@@ -39,7 +35,7 @@ function validate() {
     $('#loginContainer').hide()
     $('#containerChat').show()
     $('button.change-username').show()
-}
+})
 
 socket.on('connect_error', (err) => {
     if (err.message === 'Invalid username') {
