@@ -9,17 +9,21 @@ $(function() {
         $('#spanUsername').text(username)
         $('#loginContainer').hide()
         $('#containerChat').show()
-        $('#btnChange').show()
+        $('button.change-username').show()
     }
 })
+
+$(document).on('click', 'button.change-username', changeUsername)
 
 function changeUsername() {
     localStorage.removeItem('username')
     socket.disconnect()
     $('#loginContainer').show()
     $('#containerChat').hide()
-    $('#btnChange').hide()
+    $('button.change-username').hide()
 }
+
+$(document).on('click', 'button.join', validate)
 
 function validate() {
     let username = document.getElementById('username').value
@@ -34,7 +38,7 @@ function validate() {
     $('#spanUsername').text(username)
     $('#loginContainer').hide()
     $('#containerChat').show()
-    $('#btnChange').show()
+    $('button.change-username').show()
 }
 
 socket.on('connect_error', (err) => {
