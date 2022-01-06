@@ -83,9 +83,10 @@ io.on('connection', function(socket:any){
 
 });
 
-let port = 80
-http.listen(port, function(){
-    console.log(`listening on *:${port}`);
+const PORT = process.env.PORT || 3000;
+http.listen(PORT, function(){
+    console.log(`listening on *:${PORT}`);
+    console.log("%c Server running", "color: green");
 });
 
 
