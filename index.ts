@@ -83,7 +83,7 @@ io.on('connection', function(socket:any){
 
 });
 
-let port = process.env.PORT || 3000
+let port = 80
 http.listen(port, function(){
     console.log(`listening on *:${port}`);
 });
