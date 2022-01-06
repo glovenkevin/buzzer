@@ -71,10 +71,24 @@ function addButton() {
     let btnElement = document.getElementById("btnHit")
     if(document.body.contains(btnElement)) {
         return
-    } else{
-        let btn = '<button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>'
-        $('#divButton').append(btn)
     }
+
+    let exist = false
+    let username = localStorage.getItem('username')
+    $('#listUrutan > li').each(function() {
+        let text = $(this).text()
+        if (text == username) {
+            exist = true
+            return false
+        }
+    })
+
+    if (exist) {
+        return
+    }
+
+    let btn = '<button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>'
+    $('#divButton').append(btn)
 }
 
 socket.on('chat message', function(data) {
