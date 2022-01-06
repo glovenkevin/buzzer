@@ -11,6 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
 
     <style>
         #messages { list-style-type: none; margin: 0; padding: 0; }
@@ -22,24 +23,27 @@
             padding: 4rem 1rem;
         }
     </style>
-    <link rel="icon" href="/doge.jpeg">
+    <link rel="icon" href="/images/doge.jpeg">
 
 
 </head>
 <body>
     
     <nav class="navbar navbar-dark bg-dark p-4">
-        <a class="navbar-brand" href="#">
-            <img src="/doge.jpeg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+        <a class="navbar-brand ml-5" href="#">
+            <img src="/images/doge.jpeg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
             ILK - Lawak Klub
         </a>
+        <form class="form-inline">
+            <button style="display: none;" class="btn btn-outline-info my-2 my-sm-0" type="button" id="btnChange" onclick="changeUsername()">Change Username</button>
+        </form>
     </nav>
 
     <div class="container" id="loginContainer">
         <div class="row align-items-center" style="height: 80vh;">
             <div class="col-md-4 offset-md-4 text-center">
                 <div class="form-group">
-                    <img src="/doge-strong.jpeg" width="300" alt="doge fight">
+                    <img src="/images/doge-strong.jpeg" width="300" alt="doge fight">
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="text" maxlength="20" style="max-width: 400px;" placeholder="Nickname anda" id="username">
@@ -59,7 +63,7 @@
                     <footer class="blockquote-footer">Our beloved <cite title="Source Title">Rei</cite></footer>
                 </blockquote>
                 <blockquote>
-                    <img src="/memes.png" width="100%" alt="">
+                    <img src="/images/memes.png" width="100%" alt="">
                 </blockquote>
                 
                 <p>
@@ -87,97 +91,3 @@
     </div>
 </body>
 </html>
-
-<script>
-    const URL = 'http://localhost:3000'
-    var socket = io(URL, {
-        autoConnect: false,
-    });
-
-    let canHit = false
-    $(function() {
-        const username = localStorage.getItem('username')
-        if (username) {
-            socket.auth = { username }
-            socket.connect()
-
-            $('#spanUsername').text(username)
-            $('#loginContainer').hide()
-            $('#containerChat').show()
-        }
-    })
-
-    function validate() {
-        let username = document.getElementById('username').value
-        if (username.trim() == '') {
-            alert('Username tidak boleh kosong')
-            return false
-        }
-
-        socket.auth = { username }
-        socket.connect();
-        localStorage.setItem('username', username)
-        $('#spanUsername').text(username)
-        $('#loginContainer').hide()
-        $('#containerChat').show()
-    }
-
-    socket.on('connect_error', (err) => {
-        if (err.message === 'Invalid username') {
-            document.getElementById('username').value = ''
-            alert('Username telah digunakan')
-        }
-    })
-
-    socket.on('session', ({sessionID, userID}) => {
-        socket.auth = { sessionID }
-        localStorage.setItem('sessionID', sessionID)
-        socket.userID = userID
-    })
-
-    $(document).on('click', '#btnHit', function() {
-        let name = $('#spanUsername').text()
-        socket.emit('leaderboard', name);
-        socket.emit('chat message', `Hit by ${name}`);
-        canHit = false
-        $('#btnHit').remove()
-    })
-
-    socket.on('admin command', function(data) {
-        if (data == 'release') {
-            addButton()
-        }
-        if (data == 'not-release') {
-            $('#btnHit').remove()
-        }
-    });
-
-    function addButton() {
-        let btnElement = document.getElementById("btnHit")
-        if(document.body.contains(btnElement)) {
-            return
-        } else{
-            let btn = '<button type="button" class="btn btn-primary btn-lg rounded-circle" id="btnHit">Hit me!</button>'
-            $('#divButton').append(btn)
-        }
-    }
-
-    socket.on('chat message', function(data) {
-        $('#messages').append($('<li>').text(data));
-        let messageWindow = document.getElementById('divMessage')
-        messageWindow.scrollTo(0, messageWindow.scrollHeight);
-    });
-    socket.on('leaderboard', function(data) {
-        $('#listUrutan').empty()
-        if (data.length > 0) {
-            data.forEach(element => {
-                $('#listUrutan').append($('<li>').text(element));
-            });
-        } 
-    });
-
-    socket.on('update content', function(data) {
-        $('#judulGame').text(data.content)
-    });
-
-</script>
