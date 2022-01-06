@@ -4,8 +4,11 @@
   "description": "Button untuk hit hit dengan soket",
   "main": "index.ts",
   "scripts": {
-    "start": "node index.ts",
+    "start": "ts-node index.ts",
+    "start-prod": "node dist/index.js",
     "dev": "nodemon",
+    "build": "tsc && cp -R ./static ./dist/static && cp ./*.html ./dist",
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
